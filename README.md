@@ -1,18 +1,14 @@
 # resp
 
-RESP(REdis Serialization Protocol) C++ Implementation
+RESP(Redis Serialization Protocol) C++ Implementation
 
 # Features
 
-* RESP C++03(currently, future will add a C++11 branch) Implementation.
-* No other dependencies.
+* RESP C++1y
 * Header only.
 
 # Supported Compilers
-
-* GCC >= 4.6 (include MinGW).
-* VC >= 9.0.
-
+* Apple LLVM version 9.0.0 (clang-900.0.39.2)
 # How to use
 
 Just include resp directory to your project.
