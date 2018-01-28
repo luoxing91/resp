@@ -10,16 +10,22 @@
 #
 
 # RESP base example.
-add_subdirectory (base)
+function(add_demo value)
+add_executable (${value} ${value}.cc)
+target_link_libraries(${value} boost_system.a)
+install (TARGETS ${value} RUNTIME DESTINATION bin)
+endfunction(add_demo)
+
+add_demo (base)
+add_demo(demo)
+# RESP advance example.
+add_demo (reuse)
 
 # RESP advance example.
-add_subdirectory (reuse)
+add_demo (pipeline)
 
 # RESP advance example.
-add_subdirectory (pipeline)
+add_demo (incomplete)
 
 # RESP advance example.
-add_subdirectory (incomplete)
-
-# RESP advance example.
-add_subdirectory (array)
+add_demo (array)

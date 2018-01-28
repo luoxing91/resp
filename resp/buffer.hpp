@@ -9,7 +9,103 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <boost/beast/core/detail/config.hpp>
+#include <boost/beast/http/error.hpp>
+#include <boost/beast/http/message.hpp>
+#include <boost/beast/core/detail/type_traits.hpp>
+#include <boost/asio/buffer.hpp>
+#include <boost/optional.hpp>
+#include <cstdint>
+#include <limits>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <utility>
 
+namespace boost{
+namespace beast{
+namespace http {
+template<
+    typename CharT,
+    typename Traits = std::char_traits<CharT>,
+    typename Allocator = std::allocator<CharT> >
+struct basic_redis_body{
+    static_assert(std::is_integral<CharT>::value &&
+                  sizeof(CharT) == 1 , "CharT requirements not met");
+    using value_type = std::basic_string<CharT, Traits, Allocator>;
+    static std::uint64_t size(value_type const& body){
+        return body.size();
+    }
+    struct reader{
+        value_type& body_;
+        template<bool isRequest, class Fields>
+        explicit reader(message<isRequest, basic_redis_body, Fields>& m)
+                :body_(m.body()){}
+        void init(boost::optional<std::uint64_t> const& length, error_code& ec){
+            if(length){
+                if(static_cast<std::size_t>(*length) != *length){
+                    ec = error::buffer_overflow;
+                    return;
+                }
+                try{
+                    body_.reserve(static_cast<std::size_t>(*length));
+                }catch(std::exception const&){
+                    ec = error::buffer_overflow;
+                    return;
+                }
+            }
+            ec.assign(0, ec.category());
+        }
+        template<class ConstBufferSequence>
+        std::size_t put(ConstBufferSequence const& buffers, error_code& ec){
+            using boost::asio::buffer_size;
+            using boost::asio::buffer_copy;
+            auto const extra = buffer_size(buffers);
+            auto const size = body_.size();
+            try{
+                body_.resize(size + extra);
+            }catch(std::exception const&){
+                ec = error::buffer_overflow;
+                return 0;
+            }
+            ec.assign(0, ec.category());
+            CharT* dest = &body_[size];
+            for(auto b : beast::detail::buffers_range(buffers)){
+                Traits::copy(dest, reinterpret_cast<
+                             CharT const*>(b.data()), b.size());
+                dest += b.size();
+            }
+            return extra;
+        }
+        void finish(error_code& ec){
+            ec.assign(0, ec.category());
+        }
+    };
+    
+    struct writer{
+        value_type const& body_;
+        void init(error_code& ec){
+            ec.assign(0, ec.category());
+        }
+        using const_buffers_type =
+                boost::asio::const_buffer;
+        boost::optional<std::pair<const_buffers_type, bool>> get(error_code& ec){
+            ec.assign(0, ec.category());
+            return {{const_buffers_type{
+                        body_.data(), body_.size()}, false}};
+        }
+        template<bool isRequest, class Fields>
+        explicit
+        writer(message<isRequest, basic_redis_body, Fields> const& msg)
+                :body_(msg.body()){
+        }
+    };
+};
+using redis_body = basic_redis_body<char>;
+
+}
+}
+}
 namespace resp {
 /// Can hold ref or deep copy data buffer.
 class buffer {

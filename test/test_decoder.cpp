@@ -178,3 +178,4 @@ TEST_CASE("resp decoder", "[decoder]")
     REQUIRE(subarr[1].bulkstr() == "bar");
   }
 }
+

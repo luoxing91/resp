@@ -1,7 +1,6 @@
 ///
 /// test resp buffer
 ///
-
 #define CATCH_CONFIG_NO_CPP11
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>

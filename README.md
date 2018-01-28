@@ -1,17 +1,12 @@
 # resp
 
-RESP(Redis Serialization Protocol) C++ Implementation
+ RESP(Redis Serialization Protocol) modern C++ Implementation
 
 # Features
-
 * RESP C++1y
-* Header only.
 
 # Supported Compilers
 * Apple LLVM version 9.0.0 (clang-900.0.39.2)
-# How to use
-
-Just include resp directory to your project.
 
 # CMake Options
 

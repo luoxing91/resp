@@ -9,8 +9,10 @@
 # See https://github.com/nousxiong/resp for latest version.
 #
 
-cmake_minimum_required (VERSION 2.8.6 FATAL_ERROR)
-project (resp)
+cmake_minimum_required(VERSION 3.1)
+project(resp CXX C)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -g -Wall")
 
 # Provide user options to customise the build process.
 option (RESP_DEV "RESP dev mode" OFF)

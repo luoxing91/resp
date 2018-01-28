@@ -14,5 +14,5 @@ file (GLOB_RECURSE RESP_UNIT_TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable (resp_ut ${RESP_UNIT_TEST_FILES})
-
+target_link_libraries(resp_ut boost_system)
 install (TARGETS resp_ut RUNTIME DESTINATION bin)
