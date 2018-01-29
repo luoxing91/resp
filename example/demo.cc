@@ -38,18 +38,18 @@ int main(int argc, char** argv){
         boost::asio::connect(socket, results.begin(), results.end());
 
         // Set up an HTTP GET request message
-        redis::redis_body req{redis::type::simple};
+        //redis::redis_body req{redis::type::simple};
         
         // Send the HTTP request to the remote host
-        redis::write(socket, req);
-        redis::write(socket, req);
+        // redis::write(socket, req);
+        // redis::write(socket, req);
 
 
-        // Declare a container to hold the response
-        redis::redis_body res;
+        // // Declare a container to hold the response
+        // redis::redis_body res;
 
-        // Receive the HTTP response
-        redis::read(socket, res);
+        // // Receive the HTTP response
+        // redis::read(socket, res);
 
         // Write the message to standard out
         //std::cout << res << std::endl;
