@@ -3,5 +3,6 @@ compiler: clang
 os: linux
 script: cmake . && make
 
-
+before_script:
+	- curl -L  https://raw.githubusercontent.com/luoxing91/homeEnvironment/master/bin/scripts/setup/boost.sh | bash
   
