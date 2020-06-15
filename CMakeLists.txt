@@ -1,4 +1,4 @@
-#
+
 # This file is part of the CMake build system for RESP
 #
 # Copyright (c) 2016 Nous Xiong (348944179 at qq dot com)
@@ -9,10 +9,10 @@
 # See https://github.com/nousxiong/resp for latest version.
 #
 
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.8)
 project(resp CXX C)
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -g -Wall")
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall")
 
 # Provide user options to customise the build process.
 option (RESP_DEV "RESP dev mode" OFF)
